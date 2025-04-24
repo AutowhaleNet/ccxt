@@ -5503,6 +5503,66 @@ class Exchange(object):
         raise ExchangeError(self.id + ' does not have currency code ' + code)
 
     def market(self, symbol: str):
+        if symbol in ["ITHEUM/USDT","ITHEUMUSDT"]:
+            return {
+                "info": {},
+                "id": "ITHEUMUSDT",
+                "symbol": "ITHEUM/USDT",
+                "base": "ITHEUM",
+                "quote": "USDT",
+                "baseId": "ITHEUM",
+                "quoteId": "USDT",
+                "active": True,
+                "type": "spot",
+                "subType": None,
+                "spot": True,
+                "margin": False,
+                "marginModes": {"cross": None, "isolated": None},
+                "swap": False,
+                "future": False,
+                "option": False,
+                "contract": False,
+                "settle": None,
+                "settleId": None,
+                "contractSize": None,
+                "linear": None,
+                "inverse": None,
+                "expiry": None,
+                "expiryDatetime": None,
+                "strike": None,
+                "optionType": None,
+                "taker": 0.0005,
+                "maker": 0.0,
+                "percentage": True,
+                "tierBased": False,
+                "feeSide": None,
+                "precision": {
+                    "amount": 0.01,
+                    "price": 0.000001,
+                    "cost": None,
+                    "base": None,
+                    "quote": None,
+                },
+                "limits": {
+                    "leverage": {
+                        "min": None,
+                        "max": None
+                    },
+                    "amount": {
+                        "min": 0.001,
+                        "max": None
+                    },
+                    "price": {
+                        "min": None,
+                        "max": None
+                    },
+                    "cost": {
+                        "min": 1.0,
+                        "max": 2000000.0
+                    }
+                },
+                "created": None,
+                }
         if self.markets is None:
             raise ExchangeError(self.id + ' markets not loaded')
         if symbol in self.markets:
