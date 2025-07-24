@@ -555,6 +555,7 @@ public partial class phemex : Exchange
                 } },
                 { "defaultNetworks", new Dictionary<string, object>() {
                     { "USDT", "ETH" },
+                    { "MKR", "ETH" },
                 } },
                 { "defaultSubType", "linear" },
                 { "accountsByType", new Dictionary<string, object>() {
@@ -2872,10 +2873,10 @@ public partial class phemex : Exchange
                 parameters = ((IList<object>)triggerDirectionparametersVariable)[1];
                 if (isTrue(isEqual(triggerDirection, null)))
                 {
-                    throw new ArgumentsRequired ((string)add(this.id, " createOrder() also requires a 'triggerDirection' parameter with either 'up' or 'down' value")) ;
+                    throw new ArgumentsRequired ((string)add(this.id, " createOrder() also requires a 'triggerDirection' parameter with either 'ascending' or 'descending' value")) ;
                 }
                 // the flow defined per https://phemex-docs.github.io/#more-order-type-examples
-                if (isTrue(isEqual(triggerDirection, "up")))
+                if (isTrue(isTrue(isEqual(triggerDirection, "ascending")) || isTrue(isEqual(triggerDirection, "up"))))
                 {
                     if (isTrue(isEqual(side, "sell")))
                     {
@@ -2884,7 +2885,7 @@ public partial class phemex : Exchange
                     {
                         ((IDictionary<string,object>)request)["ordType"] = ((bool) isTrue((isEqual(type, "Market")))) ? "Stop" : "StopLimit";
                     }
-                } else if (isTrue(isEqual(triggerDirection, "down")))
+                } else if (isTrue(isTrue(isEqual(triggerDirection, "descending")) || isTrue(isEqual(triggerDirection, "down"))))
                 {
                     if (isTrue(isEqual(side, "sell")))
                     {
@@ -3707,6 +3708,7 @@ public partial class phemex : Exchange
      * @description fetch the deposit address for a currency associated with this account
      * @param {string} code unified currency code
      * @param {object} [params] extra parameters specific to the exchange API endpoint
+     * @param {string} [params.network] the chain name to fetch the deposit address e.g. ETH, TRX, EOS, SOL, etc.
      * @returns {object} an [address structure]{@link https://docs.ccxt.com/#/?id=address-structure}
      */
     public async override Task<object> fetchDepositAddress(object code, object parameters = null)
@@ -3720,23 +3722,29 @@ public partial class phemex : Exchange
         object defaultNetworks = this.safeDict(this.options, "defaultNetworks");
         object defaultNetwork = this.safeStringUpper(defaultNetworks, code);
         object networks = this.safeDict(this.options, "networks", new Dictionary<string, object>() {});
-        object network = this.safeStringUpper(parameters, "network", defaultNetwork);
+        object network = this.safeStringUpper2(parameters, "network", "chainName", defaultNetwork);
         network = this.safeString(networks, network, network);
         if (isTrue(isEqual(network, null)))
         {
-            ((IDictionary<string,object>)request)["chainName"] = getValue(currency, "id");
+            throw new ArgumentsRequired ((string)add(this.id, " fetchDepositAddress() requires a network parameter")) ;
         } else
         {
             ((IDictionary<string,object>)request)["chainName"] = network;
             parameters = this.omit(parameters, "network");
         }
-        object response = await this.privateGetPhemexUserWalletsV2DepositAddress(this.extend(request, parameters));
+        object response = await this.privateGetExchangeWalletsV2DepositAddress(this.extend(request, parameters));
+        //
         //     {
-        //         "code":0,
-        //         "msg":"OK",
-        //         "data":{
-        //             "address":"0x5bfbf60e0fa7f63598e6cfd8a7fd3ffac4ccc6ad",
-        //             "tag":null
+        //         "code": 0,
+        //         "msg": "OK",
+        //         "data": {
+        //             "address": "tb1qxel5wq5gumt",
+        //             "tag": "",
+        //             "notice": false,
+        //             "accountType": 1,
+        //             "contractName": null,
+        //             "chainTokenUrl": null,
+        //             "sign": null
         //         }
         //     }
         //

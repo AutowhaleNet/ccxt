@@ -40,7 +40,7 @@ import {BaseError, ExchangeError, AuthenticationError, PermissionDenied, Account
 //-----------------------------------------------------------------------------
 // this is updated by vss.js when building
 
-const version = '4.4.88';
+const version = '4.4.96';
 
 (Exchange as any).ccxtVersion = version
 
@@ -87,7 +87,6 @@ import coinbaseinternational from  './src/coinbaseinternational.js'
 import coincatch from  './src/coincatch.js'
 import coincheck from  './src/coincheck.js'
 import coinex from  './src/coinex.js'
-import coinlist from  './src/coinlist.js'
 import coinmate from  './src/coinmate.js'
 import coinmetro from  './src/coinmetro.js'
 import coinone from  './src/coinone.js'
@@ -103,6 +102,7 @@ import digifinex from  './src/digifinex.js'
 import ellipx from  './src/ellipx.js'
 import exmo from  './src/exmo.js'
 import fmfwio from  './src/fmfwio.js'
+import foxbit from  './src/foxbit.js'
 import gate from  './src/gate.js'
 import gateio from  './src/gateio.js'
 import gemini from  './src/gemini.js'
@@ -271,7 +271,6 @@ const exchanges = {
     'coincatch':              coincatch,
     'coincheck':              coincheck,
     'coinex':                 coinex,
-    'coinlist':               coinlist,
     'coinmate':               coinmate,
     'coinmetro':              coinmetro,
     'coinone':                coinone,
@@ -287,6 +286,7 @@ const exchanges = {
     'ellipx':                 ellipx,
     'exmo':                   exmo,
     'fmfwio':                 fmfwio,
+    'foxbit':                 foxbit,
     'gate':                   gate,
     'gateio':                 gateio,
     'gemini':                 gemini,
@@ -596,7 +596,6 @@ export {
     coincatch,
     coincheck,
     coinex,
-    coinlist,
     coinmate,
     coinmetro,
     coinone,
@@ -612,6 +611,7 @@ export {
     ellipx,
     exmo,
     fmfwio,
+    foxbit,
     gate,
     gateio,
     gemini,
